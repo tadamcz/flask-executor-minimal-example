@@ -1,0 +1,28 @@
+<div id="me">Hi!</div>
+<script>
+
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+}
+
+
+function check() {
+		httpGetAsync('/get-result', function(data) {
+        	var d = JSON.parse(data)
+        	if (d.status == 'done') {
+        		d.result = String(d.result)
+        		document.getElementById("me").innerHTML = d.result;}
+        	else {setTimeout(check,1000)}
+        })
+}
+
+check()
+
+</script>
